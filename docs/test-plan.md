@@ -32,4 +32,6 @@ Unit tests utilize an isolated test database (`target/test_pos.db`) initialized 
 
 ## 3. Automated Test Execution Evidence
 
+
+
 [INFO] ------------------------------------------------------- [INFO] T E S T S [INFO] ------------------------------------------------------- [INFO] Running app.service.SaleServiceTest [INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.421 s -- in app.service.SaleServiceTest [INFO] [INFO] Results: [INFO] [INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0 [INFO] [INFO] ------------------------------------------------------------------------ [INFO] BUILD SUCCESS [INFO] ------------------------------------------------------------------------
