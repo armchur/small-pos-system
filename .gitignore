@@ -1,0 +1,15 @@
+target/ 
+*.class 
+*.jar 
+.idea/ 
+*.iml 
+.project 
+.classpath 
+.settings/ 
+.vscode/ 
+src/main/resources/config.properties 
+*.db 
+*.sqlite 
+.github/ 
+.DS_Store 
+Thumbs.db
