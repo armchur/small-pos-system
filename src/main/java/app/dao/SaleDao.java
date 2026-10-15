@@ -1,5 +1,6 @@
 package app.dao;
 
+import app.model.DailyTakingsReport;
 import app.model.Sale;
 import app.model.SaleItem;
 import java.sql.Connection;
@@ -13,4 +14,5 @@ public interface SaleDao {
     void saveSaleItem(SaleItem item, int saleId, Connection conn) throws SQLException;
     Optional<Sale> findById(int saleId) throws SQLException;
     List<Sale> findSalesByDate(LocalDate date) throws SQLException;
+    DailyTakingsReport getDailyTakings(LocalDate date) throws SQLException;
 }

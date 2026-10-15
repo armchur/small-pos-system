@@ -6,76 +6,121 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="app.ui.PosController"
-            prefWidth="900.0" prefHeight="650.0" stylesheets="@style.css">
+            prefWidth="950.0" prefHeight="700.0" stylesheets="@style.css">
     <top>
         <VBox styleClass="header-box">
             <Label text="Campus POS System" styleClass="app-title"/>
-            <Label text="Point of Sale — Transactional Checkout" styleClass="app-subtitle"/>
+            <Label text="Point of Sale — Transactional Checkout and Daily Takings" styleClass="app-subtitle"/>
         </VBox>
     </top>
 
     <center>
-        <SplitPane dividerPositions="0.45">
-            <!-- Left: Available Products Catalog -->
-            <VBox spacing="10.0">
-                <padding>
-                    <Insets top="15" right="15" bottom="15" left="15"/>
-                </padding>
-                <Label text="Available Products" styleClass="section-title"/>
-                <HBox spacing="10">
-                    <TextField fx:id="searchField" promptText="Search by name or barcode..." HBox.hgrow="ALWAYS"/>
-                    <Button text="Search" onAction="#handleSearch"/>
-                    <Button text="Reset" onAction="#handleResetCatalog"/>
-                </HBox>
-                <TableView fx:id="productTable" VBox.vgrow="ALWAYS">
-                    <columns>
-                        <TableColumn fx:id="colProdBarcode" text="Barcode" prefWidth="90"/>
-                        <TableColumn fx:id="colProdName" text="Name" prefWidth="150"/>
-                        <TableColumn fx:id="colProdPrice" text="Price ($)" prefWidth="80"/>
-                        <TableColumn fx:id="colProdStock" text="Stock" prefWidth="70"/>
-                    </columns>
-                </TableView>
-                <HBox spacing="10" alignment="CENTER_LEFT">
-                    <Label text="Qty:"/>
-                    <Spinner fx:id="quantitySpinner" prefWidth="80"/>
-                    <Button text="Add to Cart" onAction="#handleAddToCart" styleClass="btn-primary"/>
-                </HBox>
-            </VBox>
+        <TabPane tabClosingPolicy="UNAVAILABLE">
+            <!-- Tab 1: Point of Sale Checkout -->
+            <Tab text="Point of Sale">
+                <SplitPane dividerPositions="0.45">
+                    <!-- Left: Available Products Catalog -->
+                    <VBox spacing="10.0">
+                        <padding>
+                            <Insets top="15" right="15" bottom="15" left="15"/>
+                        </padding>
+                        <Label text="Available Products" styleClass="section-title"/>
+                        <HBox spacing="10">
+                            <TextField fx:id="searchField" promptText="Search by name or barcode..." HBox.hgrow="ALWAYS"/>
+                            <Button text="Search" onAction="#handleSearch"/>
+                            <Button text="Reset" onAction="#handleResetCatalog"/>
+                        </HBox>
+                        <TableView fx:id="productTable" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="colProdBarcode" text="Barcode" prefWidth="90"/>
+                                <TableColumn fx:id="colProdName" text="Name" prefWidth="150"/>
+                                <TableColumn fx:id="colProdPrice" text="Price ($)" prefWidth="80"/>
+                                <TableColumn fx:id="colProdStock" text="Stock" prefWidth="70"/>
+                            </columns>
+                        </TableView>
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Label text="Qty:"/>
+                            <Spinner fx:id="quantitySpinner" prefWidth="80"/>
+                            <Button text="Add to Cart" onAction="#handleAddToCart" styleClass="btn-primary"/>
+                        </HBox>
+                    </VBox>
 
-            <!-- Right: Current Cart and Checkout -->
-            <VBox spacing="10.0">
-                <padding>
-                    <Insets top="15" right="15" bottom="15" left="15"/>
-                </padding>
-                <Label text="Current Cart" styleClass="section-title"/>
-                <TableView fx:id="cartTable" VBox.vgrow="ALWAYS">
-                    <columns>
-                        <TableColumn fx:id="colCartName" text="Item" prefWidth="160"/>
-                        <TableColumn fx:id="colCartQty" text="Qty" prefWidth="60"/>
-                        <TableColumn fx:id="colCartPrice" text="Unit ($)" prefWidth="80"/>
-                        <TableColumn fx:id="colCartTotal" text="Total ($)" prefWidth="90"/>
-                    </columns>
-                </TableView>
+                    <!-- Right: Current Cart and Checkout -->
+                    <VBox spacing="10.0">
+                        <padding>
+                            <Insets top="15" right="15" bottom="15" left="15"/>
+                        </padding>
+                        <Label text="Current Cart" styleClass="section-title"/>
+                        <TableView fx:id="cartTable" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="colCartName" text="Item" prefWidth="160"/>
+                                <TableColumn fx:id="colCartQty" text="Qty" prefWidth="60"/>
+                                <TableColumn fx:id="colCartPrice" text="Unit ($)" prefWidth="80"/>
+                                <TableColumn fx:id="colCartTotal" text="Total ($)" prefWidth="90"/>
+                            </columns>
+                        </TableView>
 
-                <HBox spacing="10">
-                    <Button text="Remove Item" onAction="#handleRemoveCartItem"/>
-                    <Button text="Clear Cart" onAction="#handleClearCart"/>
-                </HBox>
+                        <HBox spacing="10">
+                            <Button text="Remove Item" onAction="#handleRemoveCartItem"/>
+                            <Button text="Clear Cart" onAction="#handleClearCart"/>
+                        </HBox>
 
-                <Separator/>
+                        <Separator/>
 
-                <!-- Checkout Summary Panel -->
-                <GridPane hgap="10" vgap="10">
-                    <Label text="Payment Method:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                    <ComboBox fx:id="paymentMethodCombo" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                        <!-- Checkout Summary Panel -->
+                        <GridPane hgap="10" vgap="10">
+                            <Label text="Payment Method:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                            <ComboBox fx:id="paymentMethodCombo" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
 
-                    <Label text="Total Payable:" GridPane.columnIndex="0" GridPane.rowIndex="1" styleClass="total-label"/>
-                    <Label fx:id="totalAmountLabel" text="0.00" GridPane.columnIndex="1" GridPane.rowIndex="1" styleClass="total-value"/>
-                </GridPane>
+                            <Label text="Total Payable:" GridPane.columnIndex="0" GridPane.rowIndex="1" styleClass="total-label"/>
+                            <Label fx:id="totalAmountLabel" text="0.00" GridPane.columnIndex="1" GridPane.rowIndex="1" styleClass="total-value"/>
+                        </GridPane>
 
-                <Button fx:id="completeSaleBtn" text="Complete Sale" onAction="#handleCheckout" maxWidth="1000" styleClass="btn-checkout"/>
-                <Label fx:id="statusMessageLabel" wrapText="true" styleClass="status-message"/>
-            </VBox>
-        </SplitPane>
+                        <Button fx:id="completeSaleBtn" text="Complete Sale" onAction="#handleCheckout" maxWidth="1000" styleClass="btn-checkout"/>
+                        <Label fx:id="statusMessageLabel" wrapText="true" styleClass="status-message"/>
+                    </VBox>
+                </SplitPane>
+            </Tab>
+
+            <!-- Tab 2: Daily Takings Report -->
+            <Tab text="Daily Takings Report">
+                <VBox spacing="15.0">
+                    <padding>
+                        <Insets top="20" right="20" bottom="20" left="20"/>
+                    </padding>
+                    <Label text="Daily Takings &amp; Reconciliation" styleClass="section-title"/>
+
+                    <HBox spacing="12" alignment="CENTER_LEFT">
+                        <Label text="Select Date:"/>
+                        <DatePicker fx:id="reportDatePicker"/>
+                        <Button text="Generate Report" onAction="#handleGenerateReport" styleClass="btn-primary"/>
+                    </HBox>
+
+                    <!-- Summary KPI Cards -->
+                    <HBox spacing="20">
+                        <VBox spacing="5" style="-fx-background-color: #f1f5f9; -fx-padding: 15; -fx-background-radius: 8; -fx-min-width: 220;">
+                            <Label text="Total Transactions" style="-fx-text-fill: #64748b; -fx-font-size: 13px;"/>
+                            <Label fx:id="reportSalesCountLabel" text="0" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #0f172a;"/>
+                        </VBox>
+                        <VBox spacing="5" style="-fx-background-color: #f1f5f9; -fx-padding: 15; -fx-background-radius: 8; -fx-min-width: 220;">
+                            <Label text="Total Takings Revenue" style="-fx-text-fill: #64748b; -fx-font-size: 13px;"/>
+                            <Label fx:id="reportTotalRevenueLabel" text="0.00" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #16a34a;"/>
+                        </VBox>
+                    </HBox>
+
+                    <Label text="Breakdown by Payment Method" style="-fx-font-weight: bold; -fx-font-size: 14px;"/>
+
+                    <TableView fx:id="breakdownTable" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="colMethod" text="Payment Method" prefWidth="180"/>
+                            <TableColumn fx:id="colMethodCount" text="Transactions" prefWidth="140"/>
+                            <TableColumn fx:id="colMethodSubtotal" text="Subtotal ($)" prefWidth="160"/>
+                        </columns>
+                    </TableView>
+
+                    <Label fx:id="reportStatusLabel" wrapText="true" styleClass="status-message"/>
+                </VBox>
+            </Tab>
+        </TabPane>
     </center>
 </BorderPane>

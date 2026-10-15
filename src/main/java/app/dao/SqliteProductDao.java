@@ -123,7 +123,6 @@ public class SqliteProductDao implements ProductDao {
 
     @Override
     public boolean decrementStock(int productId, int quantity, Connection conn) throws SQLException {
-        // Enforces that stock must be >= quantity at update time
         String sql = "UPDATE products SET stock_quantity = stock_quantity - ? " +
                     "WHERE product_id = ? AND stock_quantity >= ?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {

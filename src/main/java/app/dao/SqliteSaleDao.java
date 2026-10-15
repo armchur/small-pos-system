@@ -1,7 +1,9 @@
 package app.dao;
 
+import app.model.DailyTakingsReport;
 import app.model.Sale;
 import app.model.SaleItem;
+
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -89,6 +91,55 @@ public class SqliteSaleDao implements SaleDao {
             }
         }
         return sales;
+    }
+
+    @Override
+    public DailyTakingsReport getDailyTakings(LocalDate date) throws SQLException {
+        String dateStr = date.toString();
+
+        String summarySql = """
+            SELECT COUNT(*), COALESCE(SUM(total_amount), 0.0)
+            FROM sales
+            WHERE DATE(sale_timestamp) = ?
+        """;
+
+        String breakdownSql = """
+            SELECT payment_method, COUNT(*), COALESCE(SUM(total_amount), 0.0)
+            FROM sales
+            WHERE DATE(sale_timestamp) = ?
+            GROUP BY payment_method
+            ORDER BY payment_method ASC
+        """;
+
+        int totalCount = 0;
+        double totalRevenue = 0.0;
+        List<DailyTakingsReport.PaymentBreakdown> breakdowns = new ArrayList<>();
+
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            try (PreparedStatement ps = conn.prepareStatement(summarySql)) {
+                ps.setString(1, dateStr);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        totalCount = rs.getInt(1);
+                        totalRevenue = rs.getDouble(2);
+                    }
+                }
+            }
+
+            try (PreparedStatement ps = conn.prepareStatement(breakdownSql)) {
+                ps.setString(1, dateStr);
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        String method = rs.getString(1);
+                        int count = rs.getInt(2);
+                        double subtotal = rs.getDouble(3);
+                        breakdowns.add(new DailyTakingsReport.PaymentBreakdown(method, count, subtotal));
+                    }
+                }
+            }
+        }
+
+        return new DailyTakingsReport(date, totalCount, totalRevenue, breakdowns);
     }
 
     private List<SaleItem> findItemsBySaleId(int saleId, Connection conn) throws SQLException {

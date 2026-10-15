@@ -3,6 +3,7 @@ package app.service;
 import app.dao.DatabaseConnection;
 import app.dao.SqliteProductDao;
 import app.dao.SqliteSaleDao;
+import app.model.DailyTakingsReport;
 import app.model.Product;
 import app.model.Sale;
 import app.model.SaleItem;
@@ -14,6 +15,7 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -139,5 +141,27 @@ public class SaleServiceTest {
         assertThrows(IllegalArgumentException.class, () -> {
             saleService.checkout(List.of(), "CASH");
         });
+    }
+
+    @Test
+    void testDailyTakingsReportValidation() {
+        assertThrows(IllegalArgumentException.class, () -> saleService.getDailyTakings(null));
+        assertThrows(IllegalArgumentException.class, () -> saleService.getDailyTakings(LocalDate.now().plusDays(1)));
+    }
+
+    @Test
+    void testDailyTakingsReportCalculations() throws Exception {
+        LocalDate today = LocalDate.now();
+        DailyTakingsReport reportBefore = saleService.getDailyTakings(today);
+        int initialSales = reportBefore.getTotalSalesCount();
+
+        SaleItem item = new SaleItem();
+        item.setProductId(1);
+        item.setQuantity(1);
+        saleService.checkout(List.of(item), "CASH");
+
+        DailyTakingsReport reportAfter = saleService.getDailyTakings(today);
+        assertEquals(initialSales + 1, reportAfter.getTotalSalesCount());
+        assertTrue(reportAfter.getTotalRevenue() >= reportBefore.getTotalRevenue());
     }
 }

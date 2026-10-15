@@ -3,6 +3,7 @@ package app.service;
 import app.dao.ConnectionFactory;
 import app.dao.ProductDao;
 import app.dao.SaleDao;
+import app.model.DailyTakingsReport;
 import app.model.Product;
 import app.model.Sale;
 import app.model.SaleItem;
@@ -11,6 +12,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -123,4 +125,15 @@ public class SaleService {
             }
         }
     }
+           public DailyTakingsReport getDailyTakings(java.time.LocalDate date) throws SQLException {
+        if (date == null) {
+            throw new IllegalArgumentException("Report date cannot be null");
+        }
+        if (date.isAfter(java.time.LocalDate.now())) {
+            throw new IllegalArgumentException("Cannot generate report for future dates");
+        }
+        return saleDao.getDailyTakings(date);
+    }
+
+
 }
