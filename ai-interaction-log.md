@@ -22,3 +22,17 @@ Entry 4
 - **Phase & Tool:** Phase 3 (Data Access Layer), Lovable AI Assistant
 - **Prompt:** "Generate ProductDao and SaleDao interfaces and SQLite implementations with 100% PreparedStatement parameterization and connection-passing for transactional writes."
 - **Outcome & Judgement:** Accepted with modification. Ensured `decrementStock` uses an atomic update (`WHERE product_id = ? AND stock_quantity >= ?`) returning rows affected. If another process or previous sale exhausted stock, the row count is 0 and the calling transaction aborts immediately, preventing race conditions.
+
+
+
+## Entry 5: Phase 4 — Service Layer Business Rules & Automated Testing
+- **Phase & Tool:** Phase 4 (Testing & Quality), Lovable AI Assistant
+- **Prompt:** "Implement SaleService with transactional checkout and JUnit 5 test suite verifying calculations, stock decrement, and rollback on insufficient stock."
+- **Outcome & Judgement:** Accepted with verification. Verified via automated tests that when requested quantity exceeds available inventory, an exception is thrown, the transaction rolls back, and stock remains untouched. Confirmed that pricing is sourced from the database rather than user input.
+
+
+
+## Entry 7: Phase 3 — FXML Variable Binding Syntax Bugfix
+- **Phase & Tool:** Phase 3 (Frontend / JavaFX), Lovable AI Assistant
+- **Prompt:** "Fix JavaFX runtime FXML load error: KeyPath.parse Invalid path on pos_view.fxml line 75."
+- **Outcome & Judgement:** Modified / Corrected. Diagnosed that JavaFX FXML interprets the `$` prefix as an expression evaluation operator (`KeyPath`). The string `text="$0.00"` was misparsed as a dynamic property binding to an invalid path `0.00`. Corrected the text literal to `0.00` and updated `maxWidth` to a numeric value `1000`, resolving the FXML loader exception.

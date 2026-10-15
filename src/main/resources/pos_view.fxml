@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="app.ui.PosController"
+            prefWidth="900.0" prefHeight="650.0" stylesheets="@style.css">
+    <top>
+        <VBox styleClass="header-box">
+            <Label text="Campus POS System" styleClass="app-title"/>
+            <Label text="Point of Sale — Transactional Checkout" styleClass="app-subtitle"/>
+        </VBox>
+    </top>
+
+    <center>
+        <SplitPane dividerPositions="0.45">
+            <!-- Left: Available Products Catalog -->
+            <VBox spacing="10.0">
+                <padding>
+                    <Insets top="15" right="15" bottom="15" left="15"/>
+                </padding>
+                <Label text="Available Products" styleClass="section-title"/>
+                <HBox spacing="10">
+                    <TextField fx:id="searchField" promptText="Search by name or barcode..." HBox.hgrow="ALWAYS"/>
+                    <Button text="Search" onAction="#handleSearch"/>
+                    <Button text="Reset" onAction="#handleResetCatalog"/>
+                </HBox>
+                <TableView fx:id="productTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colProdBarcode" text="Barcode" prefWidth="90"/>
+                        <TableColumn fx:id="colProdName" text="Name" prefWidth="150"/>
+                        <TableColumn fx:id="colProdPrice" text="Price ($)" prefWidth="80"/>
+                        <TableColumn fx:id="colProdStock" text="Stock" prefWidth="70"/>
+                    </columns>
+                </TableView>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Qty:"/>
+                    <Spinner fx:id="quantitySpinner" prefWidth="80"/>
+                    <Button text="Add to Cart" onAction="#handleAddToCart" styleClass="btn-primary"/>
+                </HBox>
+            </VBox>
+
+            <!-- Right: Current Cart and Checkout -->
+            <VBox spacing="10.0">
+                <padding>
+                    <Insets top="15" right="15" bottom="15" left="15"/>
+                </padding>
+                <Label text="Current Cart" styleClass="section-title"/>
+                <TableView fx:id="cartTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colCartName" text="Item" prefWidth="160"/>
+                        <TableColumn fx:id="colCartQty" text="Qty" prefWidth="60"/>
+                        <TableColumn fx:id="colCartPrice" text="Unit ($)" prefWidth="80"/>
+                        <TableColumn fx:id="colCartTotal" text="Total ($)" prefWidth="90"/>
+                    </columns>
+                </TableView>
+
+                <HBox spacing="10">
+                    <Button text="Remove Item" onAction="#handleRemoveCartItem"/>
+                    <Button text="Clear Cart" onAction="#handleClearCart"/>
+                </HBox>
+
+                <Separator/>
+
+                <!-- Checkout Summary Panel -->
+                <GridPane hgap="10" vgap="10">
+                    <Label text="Payment Method:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                    <ComboBox fx:id="paymentMethodCombo" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                    <Label text="Total Payable:" GridPane.columnIndex="0" GridPane.rowIndex="1" styleClass="total-label"/>
+                    <Label fx:id="totalAmountLabel" text="0.00" GridPane.columnIndex="1" GridPane.rowIndex="1" styleClass="total-value"/>
+                </GridPane>
+
+                <Button fx:id="completeSaleBtn" text="Complete Sale" onAction="#handleCheckout" maxWidth="1000" styleClass="btn-checkout"/>
+                <Label fx:id="statusMessageLabel" wrapText="true" styleClass="status-message"/>
+            </VBox>
+        </SplitPane>
+    </center>
+</BorderPane>
