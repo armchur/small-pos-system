@@ -13,3 +13,4 @@ src/main/resources/config.properties
 .github/ 
 .DS_Store 
 Thumbs.db
+dependency-reduced-pom.xml
