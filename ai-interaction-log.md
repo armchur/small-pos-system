@@ -15,3 +15,10 @@ Entry 3
 - **Phase & Tool:** Phase 3 (Architecture & Model), Lovable AI Assistant
 - **Prompt:** "Create POJO domain models for Product, Category, Sale, and SaleItem, and a DatabaseConnection manager reading config.properties with SQLite foreign key enforcement."
 - **Outcome & Judgement:** Accepted with verification. Ensured `PRAGMA foreign_keys = ON;` is executed on every SQLite connection so foreign key constraints are strictly respected. Confirmed domain entities follow clean encapsulation with getters and setters.
+
+
+Entry 4
+## Entry 4: Phase 3 — DAO Implementation & Parameterized SQL
+- **Phase & Tool:** Phase 3 (Data Access Layer), Lovable AI Assistant
+- **Prompt:** "Generate ProductDao and SaleDao interfaces and SQLite implementations with 100% PreparedStatement parameterization and connection-passing for transactional writes."
+- **Outcome & Judgement:** Accepted with modification. Ensured `decrementStock` uses an atomic update (`WHERE product_id = ? AND stock_quantity >= ?`) returning rows affected. If another process or previous sale exhausted stock, the row count is 0 and the calling transaction aborts immediately, preventing race conditions.
