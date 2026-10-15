@@ -8,3 +8,10 @@
 - **Phase & Tool:** Phase 2 (System Design), Lovable AI Assistant
 - **Prompt:** "Design a 3NF normalized SQLite schema for the Small Business POS including categories, products, sales, and sale_items with constraints to support transactional stock decrement and receipt numbering."
 - **Outcome & Judgement:** Accepted with verification. Verified that `stock_quantity >= 0` check constraint guards against negative stock at the database level. Confirmed `sales` and `sale_items` split eliminates repeating groups (1NF) and satisfies 3NF. Prepared foreign key cascades and indexes on `barcode` and `sale_timestamp` for quick lookups and daily takings queries.
+
+
+Entry 3
+## Entry 3: Phase 3 — Domain Model & Database Connectivity
+- **Phase & Tool:** Phase 3 (Architecture & Model), Lovable AI Assistant
+- **Prompt:** "Create POJO domain models for Product, Category, Sale, and SaleItem, and a DatabaseConnection manager reading config.properties with SQLite foreign key enforcement."
+- **Outcome & Judgement:** Accepted with verification. Ensured `PRAGMA foreign_keys = ON;` is executed on every SQLite connection so foreign key constraints are strictly respected. Confirmed domain entities follow clean encapsulation with getters and setters.
